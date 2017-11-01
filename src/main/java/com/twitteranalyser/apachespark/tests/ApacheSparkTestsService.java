@@ -13,12 +13,13 @@ import twitter4j.Status;
 public class ApacheSparkTestsService {
 
     public void testMethod() {
-        final String consumerKey = "ldH2JTJtrEyvuSDKRsrom5VFm";
-        final String consumerSecret = "GT0D2iafQMLQCcKaU1MoE9C6rZA5puIpi18i4SBUTAPclrl0Cd";
-        final String accessToken = "875731293761396736-WbQcTDI1Lc8MEr2qX7FHUOkvxY14oGi";
-        final String accessTokenSecret = "QGcl0tFmCCpcUOqIBCDigeOfsPlZv134V12IiPntwIrMV";
+        //credentials and appName are specified in xml file
+        final String consumerKey = "";
+        final String consumerSecret = "";
+        final String accessToken = "";
+        final String accessTokenSecret = "";
 
-        SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("ToffeeMasterThesis");
+        SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("");
         JavaStreamingContext jssc = new JavaStreamingContext(conf, new Duration(10000));
 
         System.setProperty("twitter4j.oauth.consumerKey", consumerKey);

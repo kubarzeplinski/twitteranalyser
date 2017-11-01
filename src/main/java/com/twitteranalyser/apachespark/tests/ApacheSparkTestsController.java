@@ -10,6 +10,11 @@ public class ApacheSparkTestsController {
     @Autowired
     ApacheSparkTestsService apacheSparkTestsService;
 
+    @RequestMapping(value = "/")
+    public String index() {
+        return "index.html";
+    }
+
     @RequestMapping(value = "/apacheSpark/test")
     public void testMethod() {
         apacheSparkTestsService.testMethod();
