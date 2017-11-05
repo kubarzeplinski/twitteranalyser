@@ -1,10 +1,9 @@
 package com.twitteranalyser.apachespark;
 
+import com.twitteranalyser.apachespark.settings.SparkSettings;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/spark")
@@ -25,6 +24,13 @@ public class SparkController {
     public boolean stop() {
         sparkManager.stop();
         log.info("Apache Spark stopped");
+        return true;
+    }
+
+    @RequestMapping(value = "/setCustomSettings", method = RequestMethod.POST)
+    public boolean setCustomSettings(@RequestBody SparkSettings settings) {
+        sparkManager.setCustomSettings(settings);
+        log.info("Apache Spark custom settings set");
         return true;
     }
 
