@@ -24,12 +24,11 @@ public class TwitterCredentials {
         validateProperties(consumerKey, consumerSecret, accessToken, accessTokenSecret);
     }
 
-    public boolean validateProperties(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
+    public void validateProperties(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
         Assert.notNull(consumerKey, "consumerKey cannot be null");
         Assert.notNull(consumerSecret, "consumerSecret cannot be null");
         Assert.notNull(accessToken, "accessToken cannot be null");
         Assert.notNull(accessTokenSecret, "accessTokenSecret cannot be null");
-        return true;
     }
 
 }
