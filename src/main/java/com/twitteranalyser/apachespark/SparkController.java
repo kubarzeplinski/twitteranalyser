@@ -2,6 +2,7 @@ package com.twitteranalyser.apachespark;
 
 import com.twitteranalyser.apachespark.settings.SparkSettings;
 import lombok.extern.log4j.Log4j;
+import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,23 +14,23 @@ public class SparkController {
     @Autowired
     private SparkService sparkManager;
 
-    @RequestMapping(value = "/start", method = RequestMethod.GET)
-    public boolean start() {
-        sparkManager.start();
+    @PostMapping(value = "/start")
+    public boolean start(@RequestBody String keyWord) {
+        JavaStreamingContext javaStreamingContext = sparkManager.start();
         log.info("Apache Spark initialized");
         return true;
     }
 
-    @RequestMapping(value = "/stop", method = RequestMethod.GET)
+    @GetMapping(value = "/stop")
     public boolean stop() {
         sparkManager.stop();
         log.info("Apache Spark stopped");
         return true;
     }
 
-    @RequestMapping(value = "/setCustomSettings", method = RequestMethod.POST)
+    @PostMapping(value = "/setCustomSettings")
     public boolean setCustomSettings(@RequestBody SparkSettings settings) {
-        sparkManager.setCustomSettings(settings);
+        JavaStreamingContext javaStreamingContext = sparkManager.setCustomSettings(settings);
         log.info("Apache Spark custom settings set");
         return true;
     }

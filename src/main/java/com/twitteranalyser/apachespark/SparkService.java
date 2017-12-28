@@ -18,21 +18,21 @@ public class SparkService {
 
     private JavaStreamingContext javaStreamingContext;
 
-    public JavaReceiverInputDStream<Status> start() {
+    public JavaStreamingContext start() {
         SparkConf configuration = sparkConfigurationService.setDefaultConfiguration();
         javaStreamingContext = new JavaStreamingContext(configuration, new Duration(10000));
-        return TwitterUtils.createStream(javaStreamingContext);
+        return javaStreamingContext;
     }
 
     public void stop() {
         javaStreamingContext.stop();
     }
 
-    public JavaReceiverInputDStream<Status> setCustomSettings(SparkSettings settings) {
+    public JavaStreamingContext setCustomSettings(SparkSettings settings) {
         stop();
         SparkConf configuration = sparkConfigurationService.setCustomConfiguration(settings.getCredentials());
         javaStreamingContext = new JavaStreamingContext(configuration, new Duration(settings.getDuration()));
-        return TwitterUtils.createStream(javaStreamingContext);
+        return javaStreamingContext;
     }
 
 }
