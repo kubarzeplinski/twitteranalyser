@@ -63,7 +63,7 @@ public class ApacheSparkTestService {
         final String accessTokenSecret = "";
 
         SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, new Duration(10000));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, new Duration(1000));
 
         System.setProperty("twitter4j.oauth.consumerKey", consumerKey);
         System.setProperty("twitter4j.oauth.consumerSecret", consumerSecret);
@@ -72,18 +72,21 @@ public class ApacheSparkTestService {
 
         JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jssc);
 
-        keyWord = new KeyWord("FOOTBALL");
+        keyWord = new KeyWord("NewYearsEve");
         keyWordRepository.save(keyWord);
 
         JavaDStream<Status> tweets = stream.filter(status ->
-                StringUtils.containsIgnoreCase(status.getText(), "FOOTBALL")
+                StringUtils.containsIgnoreCase(status.getText(), "NewYearsEve")
         );
 
         JavaDStream<String> statuses = tweets.map(status -> {
-            User user = new User(status);
-            userRepository.save(user);
+            User user = userRepository.findByScreenName(status.getUser().getScreenName());
+            if (user == null) {
+                user = new User(status);
+                userRepository.save(user);
+            }
             Tweet tweet = new Tweet(keyWord, user, status);
-            keyWord.addTweet(tweet);
+            keyWord.setTweet(tweet);
             keyWordRepository.save(keyWord);
             return "name: " + status.getUser().getName() + " date: " + status.getCreatedAt() + " text: " + status.getText();
         });

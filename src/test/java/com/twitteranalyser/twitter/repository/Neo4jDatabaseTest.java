@@ -6,7 +6,6 @@ import com.twitteranalyser.twitter.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,9 +15,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class Neo4jDatabaseTest {
-
-    @Autowired
-    private Session session;
 
     @Autowired
     KeyWordRepository keyWordRepository;
@@ -43,7 +39,7 @@ public class Neo4jDatabaseTest {
         Tweet tweet = new Tweet(keyWord, user, "I like FOOTBALL.");
 
         //Add relationship to end node
-        keyWord.addTweet(tweet);
+        keyWord.setTweet(tweet);
         keyWordRepository.save(keyWord);
     }
 

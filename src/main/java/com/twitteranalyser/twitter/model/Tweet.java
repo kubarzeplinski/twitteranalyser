@@ -1,39 +1,51 @@
 package com.twitteranalyser.twitter.model;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.neo4j.ogm.annotation.*;
+import org.neo4j.ogm.annotation.EndNode;
+import org.neo4j.ogm.annotation.RelationshipEntity;
+import org.neo4j.ogm.annotation.StartNode;
 import twitter4j.GeoLocation;
 import twitter4j.Status;
 
-import java.io.Serializable;
-
-@AllArgsConstructor
 @NoArgsConstructor
-@RelationshipEntity(type="INTERESTED_IN")
-public class Tweet implements Serializable {
+@RelationshipEntity(type = "INTERESTED_IN")
+public class Tweet {
 
     Long id;
-    String text;
-    GeoLocation geoLocation;
+    private String text;
+    private double latitude;
+    private double longitude;
     @EndNode
-    KeyWord keyWord;
+    private KeyWord keyWord;
     @StartNode
-    User user;
-//    String inReplyToScreenName;
-//    Status retweetedStatus;
+    private User user;
 
     public Tweet(KeyWord keyWord, User user, Status status) {
         this.keyWord = keyWord;
         this.user = user;
         this.text = status.getText();
-        this.geoLocation = status.getGeoLocation();
+        setLocation(status);
     }
 
     public Tweet(KeyWord keyWord, User user, String text) {
         this.keyWord = keyWord;
         this.user = user;
         this.text = text;
+    }
+
+    private void setLocation(Status status) {
+        GeoLocation location = null;
+
+        if (status.getGeoLocation() != null) {
+            location = status.getGeoLocation();
+        } else if (status.getPlace() != null) {
+            location = status.getPlace().getGeometryCoordinates()[0][0];
+        }
+        if (location == null) {
+            return;
+        }
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
     }
 
 }
